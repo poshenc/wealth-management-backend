@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class MarketIndex extends Model {
+  class Market extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,11 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  MarketIndex.init({
-    name: DataTypes.STRING
+  Market.init({
+    ticker: DataTypes.STRING,
+    image: DataTypes.STRING,
+    price: DataTypes.STRING,
+    movement: DataTypes.STRING,
+    change: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'MarketIndex',
+    modelName: 'Market',
   });
-  return MarketIndex;
+  return Market;
 };
