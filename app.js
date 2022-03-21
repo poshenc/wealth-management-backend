@@ -4,23 +4,37 @@ const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 
 const app = express()
-// const cors = require('cors')
+const cors = require('cors')
 const PORT = 3001
 
-// app.use(cors())
+const db = require('./models')
+const Market = db.Market
+const User = db.User
+
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+// app.get('/', (req, res) => {
+//   res.send('hellow world!!')
+// })
+
 app.get('/', (req, res) => {
-  res.send('hellow world!!')
+  return Market.findAll({
+    raw: true,
+    nest: true
+  })
+    .then(markets => { res.send(markets) })
+    .catch(err => console.log(err))
 })
 
-// app.post(`http://localhost:${PORT}/api/insert`, (req, res) => {
-//   const indexName = req.body.name
+app.post(`http://localhost:${PORT}/api/insert`, (req, res) => {
+  const { ticker, image, price, movement, change } = req.body
+  const UserId = 1
 
-//   MarketIndices.create({ name })
-//     .then(() => console.log('posted!'))
-// })
+  Market.create({ ticker, image, price, movement, change, userId: UserId })
+    .then(() => console.log('posted!'))
+})
 
 
 
