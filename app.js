@@ -11,13 +11,10 @@ const db = require('./models')
 const Market = db.Market
 const User = db.User
 
+app.use(express.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
-
-// app.get('/', (req, res) => {
-//   res.send('hellow world!!')
-// })
 
 app.get('/', (req, res) => {
   return Market.findAll({
@@ -28,14 +25,17 @@ app.get('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
-app.post(`http://localhost:${PORT}/api/insert`, (req, res) => {
-  const { ticker, image, price, movement, change } = req.body
+
+app.post('/market', (req, res) => {
+  const { ticker, image, price, movement, change } = req.body.marketData
   const UserId = 1
 
-  Market.create({ ticker, image, price, movement, change, userId: UserId })
-    .then(() => console.log('posted!'))
+  return Market.create({ ticker, image, price, movement, change, UserId })
+    .then((response) => {
+      res.json(response)
+    })
+    .catch(error => { console.log(error) })
 })
-
 
 
 app.listen(PORT, () => {
