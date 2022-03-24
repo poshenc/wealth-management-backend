@@ -37,6 +37,25 @@ app.post('/market', (req, res) => {
     .catch(error => { console.log(error) })
 })
 
+// get watchlist
+app.get('/watchlist', (req, res) => {
+  const userId = req.query.userId
+
+  return User.findAll({
+    where: { id: userId },
+    raw: true,
+    nest: true,
+    include: [
+      { model: Market, as: 'WatchlistedMarkets' }
+    ]
+  })
+    .then(markets => {
+      const data = markets.map(market => market.WatchlistedMarkets)
+      res.send(data)
+    })
+    .catch(err => console.log(err))
+})
+
 // add a market to watchlist
 app.post('/watchlist', (req, res) => {
   const marketId = req.body.watchlistMarket.id
