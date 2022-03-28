@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 
 const app = express()
 const cors = require('cors')
-const PORT = 3001
+const PORT = 8000
 
 const db = require('./models')
 const { Market, User, Watchlist } = db
@@ -14,6 +14,11 @@ app.use(express.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+//CROS Preflight requests
+app.options('/*', (_, res) => {
+  res.sendStatus(200);
+});
 
 // Home page displays all markets
 app.get('/', (req, res) => {
