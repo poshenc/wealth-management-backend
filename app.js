@@ -9,9 +9,6 @@ const app = express()
 const cors = require('cors')
 const PORT = 8000
 
-const db = require('./models')
-const { Market, User, Watchlist } = db
-
 app.use(express.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
